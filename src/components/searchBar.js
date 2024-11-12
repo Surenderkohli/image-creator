@@ -98,7 +98,7 @@ const throttledApplySearch=useCallback(()=>{
           <img src={image.webformatURL} alt={image.tags}  className="h-[245px] w-full"/>
          <div className="text-center group-hover:bg-[#48184C]" >
           <button onClick={() => handleImageSelect(image.webformatURL)} className="px-6 py-2 font-bold w-full group-hover:text-white transition-bg">
-              Add Captions 
+              Add Captions  
             </button></div>
         </div>
       ))}
