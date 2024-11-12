@@ -17,8 +17,8 @@ const SearchBar = ({ onImageSelect }) => {
         toast("Search query cannot be empty.")
         return "Search query cannot be empty.";
       }
-      if (query.trim().length < 2) {
-        toast("Search query must be at least 2 characters.")
+      if (query.trim().length < 3) {
+        toast("Search query must be at least 3 characters.")
         return "Search query must be at least 3 characters.";
       }
       return "";
