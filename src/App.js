@@ -4,6 +4,8 @@ import CanvasEditor from "./components/canvasEditor";
 import './App.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import AddCaptionPage from "./AddCaptionPage";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -11,23 +13,16 @@ function App() {
   const onImageSelect = (image) => {
     setSelectedImage(image); // Updates the state with the selected image
   };
-  return (
-  //   <div className="">
-  //   <h1 className="text-3xl font-bold underline">Image Editor</h1>
-  //   <SearchBar onImageSelect={onImageSelect} />{" "}
-  //   {/* Pass the function as a prop */}
-  //   {selectedImage && <CanvasEditor image={selectedImage} />}{" "}
-  //   {/* Pass selected image */}
-  // </div>
-
-
+  return (<>
+    <ToastContainer position="top-right" autoClose={3000} />
 <Router>
       <Routes>
         
         <Route path="/" element={<SearchBar onImageSelect={setSelectedImage} />} />
         <Route path="/add-caption" element={<AddCaptionPage imageUrl={selectedImage} />} />
       </Routes>
-    </Router>
+    </Router></>
+  
   );
 }
 

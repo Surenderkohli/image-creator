@@ -1,22 +1,71 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { searchImages } from "../services/imageApi";
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Loader from "./loader";
 const SearchBar = ({ onImageSelect }) => {
     const [query, setQuery] = useState("");
     const [images, setImages] = useState([]);
+    const [lastQuery, setLastQuery] = useState("");
+
+    const [isLoading,setIsLoading]=useState(false)
+    const [error, setError] = useState(''); // Validation error state
     const navigate = useNavigate();
-    const handleSearch = async () => {
-      try {
-        const results = await searchImages(query);
-        setImages(results);
-      } catch (error) {
-        alert("Could not fetch images. Try again later.");
+
+    const validateQuery = (query) => {
+      if (!query.trim()) {
+        toast("Search query cannot be empty.")
+        return "Search query cannot be empty.";
       }
+      if (query.trim().length < 2) {
+        toast("Search query must be at least 2 characters.")
+        return "Search query must be at least 3 characters.";
+      }
+      return "";
     };
+
+    let searchTimeout;
+const handleSearch = useCallback((async () => {
+  setIsLoading(true); // start loading
+    try {
+      const results = await searchImages(query);
+      setImages(results);
+      setLastQuery(query);
+    } catch (error) {
+      console.log(error)
+      
+      toast("Could not fetch images. Try again later.");
+    }
+    finally{
+      setIsLoading(false); // End loading
+    }
+  }),
+  
+)
+
+const throttledApplySearch=useCallback(()=>{
+  const validationError = validateQuery(query);
+  if (validationError) {
+    setError(validationError); // Set error if validation fails
+    return
+  }
+  if (searchTimeout) {
+    clearTimeout(searchTimeout);
+  }
+
+  searchTimeout = setTimeout(() => {
+    handleSearch();
+  }, 1000);
+
+},[query])
+
     const handleImageSelect = (imageUrl) => {
       onImageSelect(imageUrl);
       navigate('/add-caption');
     };
+    if(isLoading){
+      return<Loader/>
+    }
   return (
     <div className="bg-[#e8e8e8] h-screen">
       <div className="bg-[#48184C] text-white text-center">
@@ -39,7 +88,7 @@ const SearchBar = ({ onImageSelect }) => {
       onChange={(e) => setQuery(e.target.value)}
       placeholder="Search images..."
     />
-     <button onClick={handleSearch} className="px-3 py-[10px] bg-[#48184C] text-white">Search</button>
+     <button onClick={throttledApplySearch} className="px-3 py-[10px] bg-[#48184C] text-white">Search</button>
      <p>Please Search Images </p>
     </div>
 
