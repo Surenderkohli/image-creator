@@ -12,7 +12,7 @@ const AddCaptionPage = ({ imageUrl }) => {
       let Canvascurrent = new fabric.Canvas(canvasRef.current);
 fabric.Image.fromURL(imageUrl,{ crossOrigin: 'anonymous' }).then((img) => {
   const desiredWidth = 400;
-  const desiredHeight = 300;
+  const desiredHeight = 300; 
 
   // Resize the image
   img.scaleToWidth(desiredWidth);
