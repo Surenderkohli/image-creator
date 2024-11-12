@@ -4,13 +4,19 @@ import { useNavigate } from 'react-router-dom';
 const AddCaptionPage = ({ imageUrl }) => {
   const canvasRef = useRef(null);
   const [canvas,setCanvas]=useState(null)
+
   // const fabricCanvas = useRef(null); 
 
     useEffect(() => {
    if (canvasRef.current){
       let Canvascurrent = new fabric.Canvas(canvasRef.current);
-fabric.Image.fromURL(imageUrl).then((img) => {
+fabric.Image.fromURL(imageUrl,{ crossOrigin: 'anonymous' }).then((img) => {
+  const desiredWidth = 400;
+  const desiredHeight = 300; 
 
+  // Resize the image
+  img.scaleToWidth(desiredWidth);
+  img.scaleToHeight(desiredHeight);
   Canvascurrent.add(img);
   Canvascurrent.centerObject(img);
   Canvascurrent.setActiveObject(img);
@@ -73,10 +79,13 @@ setCanvas(Canvascurrent)
     };
   
     const downloadImage = () => {
+    
       const dataURL = canvas.toDataURL({
         format: 'png',
         quality: 1,
       });
+    
+      
       const link = document.createElement('a');
       link.href = dataURL;
       link.download = 'edited-image.png';

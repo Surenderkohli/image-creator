@@ -14,11 +14,11 @@ const SearchBar = ({ onImageSelect }) => {
 
     const validateQuery = (query) => {
       if (!query.trim()) {
-        toast("Search query cannot be empty.")
+        toast.error("Search query cannot be empty.")
         return "Search query cannot be empty.";
       }
       if (query.trim().length < 3) {
-        toast("Search query must be at least 3 characters.")
+        toast.error("Search query must be at least 3 characters.")
         return "Search query must be at least 3 characters.";
       }
       return "";
@@ -34,7 +34,7 @@ const handleSearch = useCallback((async () => {
     } catch (error) {
       console.log(error)
       
-      toast("Could not fetch images. Try again later.");
+      toast.error("Could not fetch images. Try again later.");
     }
     finally{
       setIsLoading(false); // End loading
@@ -70,7 +70,7 @@ const throttledApplySearch=useCallback(()=>{
     <div className="bg-[#e8e8e8] h-screen">
       <div className="bg-[#48184C] text-white text-center">
         <div className="container mx-auto py-4">
-        <h1 className="text-3xl font-bold ">Image Editor</h1></div>
+        <h1 className="text-3xl font-bold " >Image Editor</h1></div>
 
       </div>
       
@@ -98,7 +98,7 @@ const throttledApplySearch=useCallback(()=>{
           <img src={image.webformatURL} alt={image.tags}  className="h-[245px] w-full"/>
          <div className="text-center group-hover:bg-[#48184C]" >
           <button onClick={() => handleImageSelect(image.webformatURL)} className="px-6 py-2 font-bold w-full group-hover:text-white transition-bg">
-              Add Captions  
+              Add Captions 
             </button></div>
         </div>
       ))}
